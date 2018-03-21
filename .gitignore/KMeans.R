@@ -1,0 +1,13 @@
+attach(data)
+
+d<-dist(as.matrix(data))
+wss <- (nrow(mydata)-1)*sum(apply(data,2,var))
+for (i in 2:15) 
+  wss[i] <- sum(kmeans(mydata,centers=i)$withinss)
+plot(1:15, wss, type="b", xlab="Number of Clusters", ylab="Within groups sum of squares")
+fit <- kmeans(mydata, 3)
+aggregate(mydata,by=list(fit$cluster),FUN=mean)
+library(cluster)
+clusplot(mydata,fit$cluster,color=TRUE,shade=TRUE,col.p = fit$cluster,lines=0)
+plot3d(as.matrix(data),fit$cluster,col=c("red","blue","green")[fit$cluster])
+print(mean(silhouette(fit$cluster,dmatrix = as.matrix(dist(data)))))

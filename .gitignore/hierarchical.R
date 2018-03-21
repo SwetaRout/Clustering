@@ -1,0 +1,11 @@
+attach(data)
+
+d<-dist(as.matrix(data), method = "euclidean")
+clusters <- hclust(d)
+plot(clusters)
+abline(h=410,col='RED')
+clusterCut <- cutree(clusters, 2)
+rect.hclust(clusters,k=2, border="red")
+clusplot(data,clusterCut,color=TRUE,shade=TRUE,col.p = clusterCut,lines=0)
+plot3d(as.matrix(data),clusterCut,col=c("red","blue")[clusterCut])
+print(mean(silhouette(clusterCut,dmatrix = as.matrix(dist(data)))))
